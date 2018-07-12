@@ -1,6 +1,7 @@
 package eu.david.paysystem.main;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,13 +17,30 @@ public class CopySeedCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         Player player = (Player)sender;
-        long seed = Bukkit.getWorld("world").getSeed();
+        long seed;
+        if (args.length == 1) {
+            switch (args[0]) {
+                case "overworld": seed = Bukkit.getWorld("world").getSeed();
+                break;
+                case "nether": seed = Bukkit.getWorld("world_nether").getSeed();
+                break;
+                case "end": seed = Bukkit.getWorld("world_the_end").getSeed();
+                break;
+                default: player.sendMessage(getCommandSyntax()); return false;
+            }
+        }
+        else {
+            player.sendMessage(getCommandSyntax());
+            return false;
+        }
         StringSelection stringSelection = new StringSelection(Long.toString(seed));
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
 
-        player.sendMessage("§aSucessfully copied seed to the seed to the Clipboard: §f"+seed);
+        player.sendMessage("§aSucessfully copied "+args[0]+"-seed to the seed to the Clipboard: §f"+seed);
 
         return false;
     }
+
+    private String getCommandSyntax() {return "§cSyntax: /copyseed [worldname] (overworld, nether, end)";}
 }
