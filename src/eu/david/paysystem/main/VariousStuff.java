@@ -12,11 +12,9 @@ public class VariousStuff {
 
         Player player = Bukkit.getPlayer(name);
         if (playerIsOnline(player)) {
-            System.out.println("online");
             return player.getUniqueId().toString();
         }
         else {
-            System.out.println("offline");
             JsonReader jsonReader = new JsonReader();
             String uuid = "";
             try {
