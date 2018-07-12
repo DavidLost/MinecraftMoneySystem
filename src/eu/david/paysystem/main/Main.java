@@ -13,7 +13,7 @@ public class Main extends JavaPlugin {
 		this.getCommand("copyseed").setExecutor(new CopySeedCommand());
 		this.getCommand("money").setExecutor(new MoneyCommand());
 
-		System.out.println("Test Plugin erfolgreich geladen!");
+		System.out.println("Money-System Plugin erfolgreich geladen!");
 	}
 	
 }
