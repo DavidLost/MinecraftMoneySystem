@@ -1,0 +1,10 @@
+name: Money Plugin
+version: 1.0
+main: eu.david.paysystem.main.Main
+commands:
+  test:
+    description: test command
+  copyseed:
+    description: copy seed to clipboard
+  money:
+    description: use the money commandse
