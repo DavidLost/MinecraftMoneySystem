@@ -1,6 +1,7 @@
-package eu.david.paysystem.main;
+package commands;
 
 import configfile.ConfigManager;
+import eu.david.paysystem.main.VariousStuff;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,8 +24,9 @@ public class FlyCommand implements CommandExecutor {
                 permission = !permission;
                 manager.setFlyPermission(executor.getUniqueId().toString(), permission);
                 executor.setAllowFlight(permission);
+                executor.setFlying(permission);
                 String mode = getPermissionString(permission);
-                executor.sendMessage("Your ability to fly is now "+mode);
+                executor.sendMessage("§aYour ability to fly is now "+mode);
             }
             else if (args.length == 1) {
                 String playerName = args[0];
@@ -46,6 +48,7 @@ public class FlyCommand implements CommandExecutor {
                 String mode = getPermissionString(permission);
                 if (stuff.playerIsOnline(player)) {
                     player.setAllowFlight(permission);
+                    player.setFlying(permission);
                     player.sendMessage("§aYour permission to fly has changed! Its now "+mode);
                 }
                 executor.sendMessage("§aSucessfully changed fly permission for §3"+playerName+"§a Its now "+mode);
@@ -68,7 +71,7 @@ public class FlyCommand implements CommandExecutor {
             mode = "§2enabled!";
         }
         else {
-            mode = "§2disabled!";
+            mode = "§4disabled!";
         }
         return mode;
     }

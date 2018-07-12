@@ -1,4 +1,4 @@
-package eu.david.paysystem.main;
+package listener;
 
 import configfile.ConfigManager;
 import org.bukkit.entity.Player;
@@ -22,6 +22,7 @@ public class JoinListener implements Listener {
         else {
             event.setJoinMessage("§2Welcome to the Server §3"+player.getName()+"!");
             manager.addMoney(player.getUniqueId().toString(), 10);
+            manager.setFlyPermission(player.getUniqueId().toString(), false);
             player.sendMessage("§aA new Account was created for you!");
             int money = manager.getMoney(player.getUniqueId().toString());
             player.sendMessage("§aYour current balance is: §2"+money);

@@ -1,4 +1,4 @@
-package eu.david.paysystem.main;
+package listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

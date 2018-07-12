@@ -1,6 +1,7 @@
-package eu.david.paysystem.main;
+package commands;
 
 import configfile.ConfigManager;
+import eu.david.paysystem.main.VariousStuff;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

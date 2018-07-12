@@ -1,4 +1,4 @@
-package eu.david.paysystem.main;
+package commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
