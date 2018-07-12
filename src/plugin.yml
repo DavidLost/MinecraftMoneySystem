@@ -7,4 +7,8 @@ commands:
   copyseed:
     description: copy seed to clipboard
   money:
-    description: use the money commandse
+    description: use the money commands
+  freeze:
+      description: command to freeze other players
+  fly:
+      description: enable or disable fly mode

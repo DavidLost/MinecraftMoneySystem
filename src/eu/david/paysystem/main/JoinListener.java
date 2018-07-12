@@ -1,6 +1,6 @@
 package eu.david.paysystem.main;
 
-import moneysystem.MoneyManager;
+import configfile.ConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +13,7 @@ public class JoinListener implements Listener {
 
         Player player = event.getPlayer();
 
-        MoneyManager manager = new MoneyManager();
+        ConfigManager manager = new ConfigManager();
 
         if (player.hasPlayedBefore()) {
             event.setJoinMessage("§3"+player.getName()+"§a is now in da hood!");

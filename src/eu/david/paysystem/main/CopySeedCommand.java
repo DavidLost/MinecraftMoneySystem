@@ -19,7 +19,7 @@ public class CopySeedCommand implements CommandExecutor {
         Player player = (Player)sender;
         long seed;
         if (args.length == 1) {
-            switch (args[0]) {
+            switch (args[0].toLowerCase()) {
                 case "overworld": seed = Bukkit.getWorld("world").getSeed();
                 break;
                 case "nether": seed = Bukkit.getWorld("world_nether").getSeed();

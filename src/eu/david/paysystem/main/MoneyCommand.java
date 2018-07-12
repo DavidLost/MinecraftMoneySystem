@@ -1,17 +1,16 @@
 package eu.david.paysystem.main;
 
-import moneysystem.MoneyManager;
+import configfile.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import web.JsonReader;
 
 public class MoneyCommand implements CommandExecutor {
 
-    private MoneyManager manager = new MoneyManager();
-    public static String apiURL = "https://api.mojang.com/users/profiles/minecraft/";
+    private ConfigManager manager = new ConfigManager();
+    VariousStuff stuff = new VariousStuff();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -29,13 +28,13 @@ public class MoneyCommand implements CommandExecutor {
                     String playerName = args[0];
                     Player player = Bukkit.getPlayer(playerName);
                     String uuid;
-                    if (playerIsOnline(player)) {
+                    if (stuff.playerIsOnline(player)) {
                         uuid = player.getUniqueId().toString();
                     }
                     else {
-                        uuid = getPlayerUUID(playerName);
+                        uuid = stuff.getPlayerUUID(playerName);
                         if (uuid.equals("")) {
-                            executor.sendMessage(getPlayerNotKnownSyntax(playerName));
+                            executor.sendMessage(stuff.getPlayerNotKnownSyntax(playerName));
                             return false;
                         }
                     }
@@ -43,7 +42,7 @@ public class MoneyCommand implements CommandExecutor {
                     executor.sendMessage("§3"+playerName+"§a currently has §2"+amount);
                 }
                 else {
-                    executor.sendMessage(getOPRequiredSyntax());
+                    executor.sendMessage(stuff.getOPRequiredSyntax());
                 }
             }
             return false;
@@ -70,13 +69,13 @@ public class MoneyCommand implements CommandExecutor {
                     String playerName = args[1];
                     Player player = Bukkit.getPlayer(playerName);
                     String uuid;
-                    if (playerIsOnline(player)) {
+                    if (stuff.playerIsOnline(player)) {
                         uuid = player.getUniqueId().toString();
                     }
                     else {
-                        uuid = getPlayerUUID(playerName);
+                        uuid = stuff.getPlayerUUID(playerName);
                         if (uuid.equals("")) {
-                            executor.sendMessage(getPlayerNotKnownSyntax(playerName));
+                            executor.sendMessage(stuff.getPlayerNotKnownSyntax(playerName));
                             return false;
                         }
                     }
@@ -118,7 +117,7 @@ public class MoneyCommand implements CommandExecutor {
                 }
             }
             else {
-                executor.sendMessage(getOPRequiredSyntax());
+                executor.sendMessage(stuff.getOPRequiredSyntax());
             }
 
         }
@@ -129,13 +128,13 @@ public class MoneyCommand implements CommandExecutor {
                 String recieverName = args[1];
                 Player reciever = Bukkit.getPlayer(recieverName);
                 String uuid;
-                if (playerIsOnline(reciever)) {
+                if (stuff.playerIsOnline(reciever)) {
                     uuid = reciever.getUniqueId().toString();
                 }
                 else {
-                    uuid = getPlayerUUID(recieverName);
+                    uuid = stuff.getPlayerUUID(recieverName);
                     if (uuid.equals("")) {
-                        executor.sendMessage(getPlayerNotKnownSyntax(recieverName));
+                        executor.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
                         return false;
                     }
                 }
@@ -161,23 +160,23 @@ public class MoneyCommand implements CommandExecutor {
                     String recieverName = args[2];
                     Player reciever = Bukkit.getPlayer(recieverName);
                     String recieverUUID;
-                    if (playerIsOnline(sender)) {
+                    if (stuff.playerIsOnline(sender)) {
                         senderUUID = sender.getUniqueId().toString();
                     }
                     else {
-                        senderUUID = getPlayerUUID(senderName);
+                        senderUUID = stuff.getPlayerUUID(senderName);
                         if (senderUUID.equals("")) {
-                            executor.sendMessage(getPlayerNotKnownSyntax(recieverName));
+                            executor.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
                             return false;
                         }
                     }
-                    if (playerIsOnline(reciever)) {
+                    if (stuff.playerIsOnline(reciever)) {
                         recieverUUID = reciever.getUniqueId().toString();
                     }
                     else {
-                        recieverUUID = getPlayerUUID(recieverName);
+                        recieverUUID = stuff.getPlayerUUID(recieverName);
                         if (recieverUUID.equals("")) {
-                            executor.sendMessage(getPlayerNotKnownSyntax(recieverName));
+                            executor.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
                             return false;
                         }
                     }
@@ -197,7 +196,7 @@ public class MoneyCommand implements CommandExecutor {
                     executor.sendMessage("§aSucessfully forced §3"+senderName+"§a to pay §2"+amount+"§a to §3"+recieverName);
                 }
                 else {
-                    executor.sendMessage(getOPRequiredSyntax());
+                    executor.sendMessage(stuff.getOPRequiredSyntax());
                 }
             }
             else {
@@ -222,7 +221,7 @@ public class MoneyCommand implements CommandExecutor {
         Player player = Bukkit.getPlayer(uuid);
         manager.setMoney(uuid, amount);
 
-        if (playerIsOnline(player) && notification) {
+        if (stuff.playerIsOnline(player) && notification) {
             player.sendMessage("§eYour money has been set to a new amount!");
             displayMoney(player);
         }
@@ -233,7 +232,7 @@ public class MoneyCommand implements CommandExecutor {
         Player player = Bukkit.getPlayer(uuid);
         manager.addMoney(uuid, amount);
 
-        if (playerIsOnline(player) && notification) {
+        if (stuff.playerIsOnline(player) && notification) {
             player.sendMessage("§eYour money has been set to a new amount!");
             displayMoney(player);
         }
@@ -245,54 +244,18 @@ public class MoneyCommand implements CommandExecutor {
         addMoney(recieverUUID, amount, false);
 
         Player sender = Bukkit.getPlayer(senderName);
-        if (playerIsOnline(sender)) {
+        if (stuff.playerIsOnline(sender)) {
             sender.sendMessage("§aYou sucessfully payed §2"+amount+"§a to §3"+recieverName);
             displayMoney(sender);
         }
         Player reciever = Bukkit.getPlayer(recieverName);
-        if (playerIsOnline(reciever)) {
+        if (stuff.playerIsOnline(reciever)) {
             reciever.sendMessage("§aYou recieved §2"+amount+"§a from §3"+senderName);
             displayMoney(reciever);
         }
     }
 
-    private String getPlayerUUID(String name) {
 
-        Player player = Bukkit.getPlayer(name);
-        if (playerIsOnline(player)) {
-            System.out.println("online");
-            return player.getUniqueId().toString();
-        }
-        else {
-            System.out.println("offline");
-            JsonReader jsonReader = new JsonReader();
-            String uuid = "";
-            try {
-                uuid = modifyUUID(jsonReader.readJsonFromUrl(apiURL+name).get("id").toString());
-            }
-            catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            System.out.println("uuid: "+uuid);
-            return uuid;
-        }
-    }
-
-    private String modifyUUID(String uuid) {
-
-        String newUUID = "";
-        char[] chars = uuid.toCharArray();
-        int[] missingChar = {8, 12, 16, 20};
-        for (int counter = 0; counter < chars.length; counter++) {
-            for (int i = 0; i < missingChar.length; i++) {
-                if (counter == missingChar[i]) {
-                    newUUID += "-";
-                }
-            }
-            newUUID += chars[counter];
-        }
-        return newUUID;
-    }
 
     private void sendCommandSyntax(Player player, int index) {
 
@@ -312,23 +275,6 @@ public class MoneyCommand implements CommandExecutor {
             player.sendMessage("§cSyntax: /money "+usages[index]);
         }
     }
-
-    public boolean playerIsOnline(Player player) {
-
-        try {
-            if (player.isOnline()) {
-                return true;
-            }
-        }
-        catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private String getOPRequiredSyntax() {return "§cYou need to be opped to perform this command!";}
-
-    private String getPlayerNotKnownSyntax(String player) {return "§cThe player §3"+player+"§c is unknown!";}
 
     private String getPlayerNotEnoughMoneySyntax(String player) {return "§cPlayer §3"+player+"§c has too little money!";}
 

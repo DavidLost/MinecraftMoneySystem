@@ -11,6 +11,6 @@ public class QuitListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-        event.setQuitMessage("§c"+player.getName()+" left the game");
+        event.setQuitMessage("§3"+player.getName()+"§c left the game");
     }
 }

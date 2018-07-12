@@ -1,21 +1,17 @@
-package moneysystem;
+package configfile;
 
-import eu.david.paysystem.main.MoneyCommand;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import web.JsonReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
-public class MoneyManager {
+public class ConfigManager {
 
     public File balancesFile;
     private FileConfiguration cfg;
 
-    public MoneyManager() {
+    public ConfigManager() {
 
         balancesFile = new File("balances.yml");
         if (!balancesFile.exists()) {
@@ -37,11 +33,7 @@ public class MoneyManager {
     public void setMoney(String uuid, int amount) {
 
         cfg.set(uuid+".money", amount);
-        try {
-            cfg.save(balancesFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        saveFile();
     }
 
     public void addMoney(String uuid, int amount) {
@@ -53,11 +45,26 @@ public class MoneyManager {
     public void updateName(String uuid, String name) {
 
         cfg.set(uuid+".name", name);
+        saveFile();
+    }
+
+    public boolean getFlyPermission(String uuid) {
+
+        return cfg.getBoolean(uuid+".flyPermission");
+    }
+
+    public void setFlyPermission(String uuid, boolean permission) {
+
+        cfg.set(uuid+".flyPermission", permission);
+        saveFile();
+    }
+
+    public void saveFile() {
+
         try {
             cfg.save(balancesFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }

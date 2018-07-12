@@ -9,11 +9,11 @@ import java.nio.charset.Charset;
 
 public class JsonReader {
 
-    private String readAll(Reader rd) throws IOException {
+    private String readAll(Reader reader) throws IOException {
 
         String result = "";
         int currentChar;
-        while ((currentChar = rd.read()) != -1) {
+        while ((currentChar = reader.read()) != -1) {
             result += (char)currentChar;
         }
         return result;
