@@ -57,7 +57,14 @@ public class MoneyCommand implements CommandExecutor {
                 index = 1;
                 if (executor.isOp()) {
                     if (args.length == 2) {
-                        int amount = Integer.parseInt(args[1]);
+                        int amount;
+                        try {
+                            amount = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException e) {
+                            sendCommandSyntax(executor, index);
+                            e.printStackTrace();
+                            return false;
+                        }
                         if (moneyCommand.equals("set")) {
                             setMoney(executor.getUniqueId().toString(), executor.getName(), amount, false);
                             executor.sendMessage("§aSucessfully set your money to §2" + amount);

@@ -13,7 +13,7 @@ public class ConfigManager {
 
     public ConfigManager() {
 
-        balancesFile = new File("balances.yml");
+        balancesFile = new File("playerdata.yml");
         if (!balancesFile.exists()) {
             try {
                 balancesFile.createNewFile();
@@ -26,7 +26,6 @@ public class ConfigManager {
 
     public int getMoney(String uuid, String name) {
 
-        updateName(uuid, name);
         int money = cfg.getInt(uuid+".money");
         saveFile();
         return money;
@@ -34,7 +33,6 @@ public class ConfigManager {
 
     public void setMoney(String uuid, String name, int amount) {
 
-        updateName(uuid, name);
         cfg.set(uuid+".money", amount);
         saveFile();
     }
