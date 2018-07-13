@@ -17,15 +17,15 @@ public class JoinListener implements Listener {
 
         if (player.hasPlayedBefore()) {
             event.setJoinMessage("§3"+player.getName()+"§a is now in da hood!");
-            manager.updateName(player.getUniqueId().toString(), player.getName());
         }
         else {
             event.setJoinMessage("§2Welcome to the Server §3"+player.getName()+"!");
-            manager.addMoney(player.getUniqueId().toString(), 10);
-            int money = manager.getMoney(player.getUniqueId().toString());
+            manager.addMoney(player.getUniqueId().toString(), player.getName(), 10);
+            int money = manager.getMoney(player.getUniqueId().toString(), player.getName());
             player.sendMessage("§aA new Account with §2"+money+"§a was created for you!");
         }
 
+        manager.updateName(player.getUniqueId().toString(), player.getName());
     }
 
 }

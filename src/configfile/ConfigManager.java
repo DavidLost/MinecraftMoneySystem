@@ -24,28 +24,30 @@ public class ConfigManager {
         cfg = YamlConfiguration.loadConfiguration(balancesFile);
     }
 
-    public int getMoney(String uuid) {
+    public int getMoney(String uuid, String name) {
 
-        int money = cfg.getInt(".uuid"+uuid+".money");
+        updateName(uuid, name);
+        int money = cfg.getInt(uuid+".money");
+        saveFile();
         return money;
     }
 
-    public void setMoney(String uuid, int amount) {
+    public void setMoney(String uuid, String name, int amount) {
 
-        cfg.set(".uuid"+uuid+".money", amount);
+        updateName(uuid, name);
+        cfg.set(uuid+".money", amount);
         saveFile();
     }
 
-    public void addMoney(String uuid, int amount) {
+    public void addMoney(String uuid, String name, int amount) {
 
-        int currentMoney = getMoney(uuid);
-        setMoney(".uuid"+uuid, currentMoney+amount);
+        int currentMoney = getMoney(uuid, name);
+        setMoney(uuid, name, currentMoney+amount);
     }
 
     public void updateName(String uuid, String name) {
 
-        cfg.set(".uuid"+uuid+".name", name);
-        saveFile();
+        cfg.set(uuid+".name", name);
     }
 
     public void saveFile() {
