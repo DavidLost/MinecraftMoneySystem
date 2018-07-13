@@ -39,7 +39,7 @@ public class MoneyCommand implements CommandExecutor {
                             return false;
                         }
                     }
-                    int amount = manager.getMoney(uuid, playerName);
+                    int amount = manager.getMoney(uuid);
                     executor.sendMessage("§3"+playerName+"§a currently has §2"+amount);
                 }
                 else {
@@ -100,7 +100,7 @@ public class MoneyCommand implements CommandExecutor {
                                 return false;
                             }
                         } else {
-                            if (manager.getMoney(uuid, playerName) + amount < 0) {
+                            if (manager.getMoney(uuid) + amount < 0) {
                                 executor.sendMessage("§cYou can't give this player bills!");
                                 return false;
                             }
@@ -147,7 +147,7 @@ public class MoneyCommand implements CommandExecutor {
                         e.printStackTrace();
                         return false;
                     }
-                    if (manager.getMoney(executor.getUniqueId().toString(), executor.getName()) - amount < 0) {
+                    if (manager.getMoney(executor.getUniqueId().toString()) - amount < 0) {
                         executor.sendMessage("§cYou don't have enough money!");
                         return false;
                     }
@@ -186,7 +186,7 @@ public class MoneyCommand implements CommandExecutor {
                             e.printStackTrace();
                             return false;
                         }
-                        if (manager.getMoney(senderUUID, senderName) - amount < 0) {
+                        if (manager.getMoney(senderUUID) - amount < 0) {
                             executor.sendMessage(getPlayerNotEnoughMoneySyntax(senderName));
                             return false;
                         }
@@ -209,14 +209,14 @@ public class MoneyCommand implements CommandExecutor {
 
     private void displayMoney(Player player) {
 
-        int money = manager.getMoney(player.getUniqueId().toString(), player.getName());
+        int money = manager.getMoney(player.getUniqueId().toString());
         player.sendMessage("§aYour current balance is: §2"+money);
     }
 
     private void setMoney(String uuid, String name, int amount, boolean notification) {
 
         Player player = Bukkit.getPlayer(uuid);
-        manager.setMoney(uuid, name, amount);
+        manager.setMoney(uuid, amount);
 
         if (stuff.playerIsOnline(player) && notification) {
             player.sendMessage("§eYour money has been set to a new amount!");
@@ -227,7 +227,7 @@ public class MoneyCommand implements CommandExecutor {
     private void addMoney(String uuid, String name, int amount, boolean notification) {
 
         Player player = Bukkit.getPlayer(uuid);
-        manager.addMoney(uuid, name, amount);
+        manager.addMoney(uuid, amount);
 
         if (stuff.playerIsOnline(player) && notification) {
             player.sendMessage("§eYour money has been set to a new amount!");

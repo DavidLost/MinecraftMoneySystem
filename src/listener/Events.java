@@ -16,8 +16,8 @@ public class Events implements Listener {
         ConfigManager manager = new ConfigManager();
 
         if (!player.hasPlayedBefore()) {
-            manager.addMoney(player.getUniqueId().toString(), player.getName(), 10);
-            int money = manager.getMoney(player.getUniqueId().toString(), player.getName());
+            manager.addMoney(player.getUniqueId().toString(), 10);
+            int money = manager.getMoney(player.getUniqueId().toString());
             player.sendMessage("§aA new Account with §2"+money+"§a was created for you!");
         }
 
