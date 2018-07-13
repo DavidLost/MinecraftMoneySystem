@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import web.JsonReader;
 
-public class VariousStuff {
+public class PlayerUUID {
 
     public String apiURL = "https://api.mojang.com/users/profiles/minecraft/";
 
@@ -28,7 +28,7 @@ public class VariousStuff {
         }
     }
 
-    public String modifyUUID(String uuid) {
+    private String modifyUUID(String uuid) {
 
         String newUUID = "";
         char[] chars = uuid.toCharArray();

@@ -26,36 +26,25 @@ public class ConfigManager {
 
     public int getMoney(String uuid) {
 
-        int money = cfg.getInt(uuid+".money");
+        int money = cfg.getInt(".uuid"+uuid+".money");
         return money;
     }
 
     public void setMoney(String uuid, int amount) {
 
-        cfg.set(uuid+".money", amount);
+        cfg.set(".uuid"+uuid+".money", amount);
         saveFile();
     }
 
     public void addMoney(String uuid, int amount) {
 
         int currentMoney = getMoney(uuid);
-        setMoney(uuid, currentMoney+amount);
+        setMoney(".uuid"+uuid, currentMoney+amount);
     }
 
     public void updateName(String uuid, String name) {
 
-        cfg.set(uuid+".name", name);
-        saveFile();
-    }
-
-    public boolean getFlyPermission(String uuid) {
-
-        return cfg.getBoolean(uuid+".flyPermission");
-    }
-
-    public void setFlyPermission(String uuid, boolean permission) {
-
-        cfg.set(uuid+".flyPermission", permission);
+        cfg.set(".uuid"+uuid+".name", name);
         saveFile();
     }
 

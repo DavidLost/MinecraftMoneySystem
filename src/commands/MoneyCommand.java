@@ -1,7 +1,7 @@
 package commands;
 
 import configfile.ConfigManager;
-import eu.david.paysystem.main.VariousStuff;
+import eu.david.paysystem.main.PlayerUUID;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class MoneyCommand implements CommandExecutor {
 
     private ConfigManager manager = new ConfigManager();
-    VariousStuff stuff = new VariousStuff();
+    PlayerUUID stuff = new PlayerUUID();
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
