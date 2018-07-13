@@ -6,7 +6,12 @@ import web.JsonReader;
 
 public class PlayerUUID {
 
-    public String apiURL = "https://api.mojang.com/users/profiles/minecraft/";
+    private String apiURL;
+
+    public PlayerUUID() {
+
+       apiURL = "https://api.mojang.com/users/profiles/minecraft/";
+    }
 
     public String getPlayerUUID(String name) {
 
@@ -33,13 +38,13 @@ public class PlayerUUID {
         String newUUID = "";
         char[] chars = uuid.toCharArray();
         int[] missingChar = {8, 12, 16, 20};
-        for (int counter = 0; counter < chars.length; counter++) {
-            for (int i = 0; i < missingChar.length; i++) {
-                if (counter == missingChar[i]) {
+        for (int i = 0; i < chars.length; i++) {
+            for (int aMissingChar : missingChar) {
+                if (i == aMissingChar) {
                     newUUID += "-";
                 }
             }
-            newUUID += chars[counter];
+            newUUID += chars[i];
         }
         return newUUID;
     }

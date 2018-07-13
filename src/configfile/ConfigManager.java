@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ConfigManager {
 
-    public File balancesFile;
+    private File balancesFile;
     private FileConfiguration cfg;
 
     public ConfigManager() {
@@ -50,7 +50,7 @@ public class ConfigManager {
         cfg.set(uuid+".name", name);
     }
 
-    public void saveFile() {
+    private void saveFile() {
 
         try {
             cfg.save(balancesFile);
