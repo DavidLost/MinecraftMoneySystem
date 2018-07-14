@@ -1,6 +1,6 @@
 name: Money Plugin
 version: 1.0
-main: Main
+main: eu.david.paysystem.main.Main
 commands:
   money:
     description: use the money commands

@@ -13,7 +13,7 @@ public class ConfigManager {
 
     public ConfigManager() {
 
-        balancesFile = new File("playerdata.yml");
+        balancesFile = new File("balances.yml");
         if (!balancesFile.exists()) {
             try {
                 balancesFile.createNewFile();

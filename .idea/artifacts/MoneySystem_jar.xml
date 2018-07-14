@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="MoneySystem.jar">
-    <output-path>D:/Bibliotheken/Dokumente/Spiele/Minecraft/Server/plugins/</output-path>
-    <root id="archive" name="Minecraft Money System.jar">
-      <element id="module-output" name="Minecraft Money Plugin" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/Sonstiges/java/JSONorg.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>
