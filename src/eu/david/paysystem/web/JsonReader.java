@@ -1,4 +1,4 @@
-package web;
+package eu.david.paysystem.web;
 
 import org.json.JSONException;
 import org.json.JSONObject;

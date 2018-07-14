@@ -1,4 +1,4 @@
-package configfile;
+package eu.david.paysystem.configfile;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

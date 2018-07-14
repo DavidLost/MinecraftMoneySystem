@@ -1,17 +1,26 @@
-package listener;
+package eu.david.paysystem.listener;
 
-import configfile.ConfigManager;
+import eu.david.paysystem.configfile.ConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 
 public class Events implements Listener {
 
+    public static Plugin plugin;
+
+    public Events(Plugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
+
+        player.sendMessage("money plugin");
 
         ConfigManager manager = new ConfigManager();
 

@@ -1,6 +1,6 @@
-package commands;
+package eu.david.paysystem.commands;
 
-import configfile.ConfigManager;
+import eu.david.paysystem.configfile.ConfigManager;
 import eu.david.paysystem.main.PlayerUUID;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

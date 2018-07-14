@@ -2,7 +2,7 @@ package eu.david.paysystem.main;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import web.JsonReader;
+import eu.david.paysystem.web.JsonReader;
 
 public class PlayerUUID {
 
