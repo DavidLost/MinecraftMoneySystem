@@ -13,7 +13,7 @@ public class PlayerUUID {
        apiURL = "https://api.mojang.com/users/profiles/minecraft/";
     }
 
-    public String getPlayerUUID(String name) throws NullPointerException {
+    public String getPlayerUUID(String name) {
 
         Player player = Bukkit.getPlayer(name);
         if (playerIsOnline(player)) {
@@ -22,7 +22,10 @@ public class PlayerUUID {
         else {
             JsonReader jsonReader = new JsonReader();
             String uuid = "";
-            uuid = modifyUUID(jsonReader.readJsonFromUrl(apiURL+name).get("id").toString());
+            try {
+                uuid = modifyUUID(jsonReader.readJsonFromUrl(apiURL+name).get("id").toString());
+            }
+            catch (NullPointerException ignored) {}
             return uuid;
         }
     }
@@ -50,9 +53,7 @@ public class PlayerUUID {
                 return true;
             }
         }
-        catch (NullPointerException e) {
-            e.printStackTrace();
-        }
+        catch (NullPointerException ignored) {}
         return false;
     }
 

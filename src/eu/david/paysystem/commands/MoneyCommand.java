@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class MoneyCommand implements CommandExecutor {
 
     private ConfigManager manager = new ConfigManager();
@@ -75,10 +77,10 @@ public class MoneyCommand implements CommandExecutor {
                             return true;
                         }
                         if (moneyCommand.equals("set")) {
-                            setMoney(commandPlayer.getUniqueId().toString(), commandPlayer.getName(), amount, false);
+                            setMoney(commandPlayer.getUniqueId().toString(), amount, false);
                             commandSender.sendMessage("§aSucessfully set your money to §2" + amount);
                         } else {
-                            addMoney(commandPlayer.getUniqueId().toString(), commandPlayer.getName(), amount, false);
+                            addMoney(commandPlayer.getUniqueId().toString(), amount, false);
                             commandPlayer.sendMessage("§aSucessfully added §2" + amount + "§a to your account");
                             displayMoney(commandPlayer);
                         }
@@ -118,10 +120,10 @@ public class MoneyCommand implements CommandExecutor {
                             notification = Boolean.parseBoolean(args[3]);
                         }
                         if (moneyCommand.equals("set")) {
-                            setMoney(uuid, playerName, amount, notification);
+                            setMoney(uuid, amount, notification);
                             commandSender.sendMessage("§aSucessfully set money of §3" + playerName + "§a to §2" + amount);
                         } else {
-                            addMoney(uuid, playerName, amount, notification);
+                            addMoney(uuid, amount, notification);
                             commandSender.sendMessage("§aSucessfully added §2" + amount + "§a to §3" + playerName);
                         }
                     } else {
@@ -225,9 +227,9 @@ public class MoneyCommand implements CommandExecutor {
         player.sendMessage("§aYour current balance is: §2"+money);
     }
 
-    private void setMoney(String uuid, String name, int amount, boolean notification) {
+    private void setMoney(String uuid, int amount, boolean notification) {
 
-        Player player = Bukkit.getPlayer(uuid);
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
         manager.setMoney(uuid, amount);
 
         if (stuff.playerIsOnline(player) && notification) {
@@ -236,9 +238,9 @@ public class MoneyCommand implements CommandExecutor {
         }
     }
 
-    private void addMoney(String uuid, String name, int amount, boolean notification) {
+    private void addMoney(String uuid, int amount, boolean notification) {
 
-        Player player = Bukkit.getPlayer(uuid);
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
         manager.addMoney(uuid, amount);
 
         if (stuff.playerIsOnline(player) && notification) {
@@ -249,8 +251,8 @@ public class MoneyCommand implements CommandExecutor {
 
     private void payMoney(String senderUUID, String senderName, String recieverUUID, String recieverName, int amount) {
 
-        addMoney(senderUUID, senderName, -amount, false);
-        addMoney(recieverUUID, recieverName, amount, false);
+        addMoney(senderUUID, -amount, false);
+        addMoney(recieverUUID, amount, false);
 
         Player sender = Bukkit.getPlayer(senderName);
         if (stuff.playerIsOnline(sender)) {
