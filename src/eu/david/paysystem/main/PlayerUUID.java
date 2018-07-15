@@ -13,7 +13,7 @@ public class PlayerUUID {
        apiURL = "https://api.mojang.com/users/profiles/minecraft/";
     }
 
-    public String getPlayerUUID(String name) {
+    public String getPlayerUUID(String name) throws NullPointerException {
 
         Player player = Bukkit.getPlayer(name);
         if (playerIsOnline(player)) {
@@ -22,13 +22,7 @@ public class PlayerUUID {
         else {
             JsonReader jsonReader = new JsonReader();
             String uuid = "";
-            try {
-                uuid = modifyUUID(jsonReader.readJsonFromUrl(apiURL+name).get("id").toString());
-            }
-            catch (NullPointerException e) {
-                e.printStackTrace();
-            }
-            System.out.println("uuid: "+uuid);
+            uuid = modifyUUID(jsonReader.readJsonFromUrl(apiURL+name).get("id").toString());
             return uuid;
         }
     }
@@ -65,5 +59,7 @@ public class PlayerUUID {
     public String getOPRequiredSyntax() {return "§cYou need to be opped to perform this command!";}
 
     public String getPlayerNotKnownSyntax(String player) {return "§cThe player §3"+player+"§c is unknown!";}
+
+    public String getConsoleNotAllowedSyntax() {return "§cYou cant perform this command in the console!";}
 
 }

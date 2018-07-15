@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 public class MoneyCommand implements CommandExecutor {
@@ -16,16 +17,20 @@ public class MoneyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
-        Player executor = (Player)commandSender;
+        boolean consoleSender = commandSender instanceof ConsoleCommandSender;
 
         int index;
 
         if (args.length == 0 || args.length == 1) {
             if (args.length == 0) {
-                displayMoney(executor);
+                if (consoleSender) {
+                    commandSender.sendMessage(stuff.getConsoleNotAllowedSyntax());
+                    return true;
+                }
+                displayMoney((Player)commandSender);
             }
             else {
-                if (executor.isOp()) {
+                if (commandSender.isOp()) {
                     String playerName = args[0];
                     Player player = Bukkit.getPlayer(playerName);
                     String uuid;
@@ -35,18 +40,18 @@ public class MoneyCommand implements CommandExecutor {
                     else {
                         uuid = stuff.getPlayerUUID(playerName);
                         if (uuid.equals("")) {
-                            executor.sendMessage(stuff.getPlayerNotKnownSyntax(playerName));
-                            return false;
+                            commandSender.sendMessage(stuff.getPlayerNotKnownSyntax(playerName));
+                            return true;
                         }
                     }
                     int amount = manager.getMoney(uuid);
-                    executor.sendMessage("§3"+playerName+"§a currently has §2"+amount);
+                    commandSender.sendMessage("§3"+playerName+"§a currently has §2"+amount);
                 }
                 else {
-                    executor.sendMessage(stuff.getOPRequiredSyntax());
+                    commandSender.sendMessage(stuff.getOPRequiredSyntax());
                 }
             }
-            return false;
+            return true;
         }
 
         String moneyCommand = args[0].toLowerCase();
@@ -55,23 +60,27 @@ public class MoneyCommand implements CommandExecutor {
             case "set":
             case "add":
                 index = 1;
-                if (executor.isOp()) {
+                if (commandSender.isOp()) {
                     if (args.length == 2) {
+                        if (consoleSender) {
+                            commandSender.sendMessage(stuff.getConsoleNotAllowedSyntax());
+                            return true;
+                        }
+                        Player commandPlayer = (Player)commandSender;
                         int amount;
                         try {
                             amount = Integer.parseInt(args[1]);
                         } catch (NumberFormatException e) {
-                            sendCommandSyntax(executor, index);
-                            e.printStackTrace();
-                            return false;
+                            sendCommandSyntax(commandSender, index);
+                            return true;
                         }
                         if (moneyCommand.equals("set")) {
-                            setMoney(executor.getUniqueId().toString(), executor.getName(), amount, false);
-                            executor.sendMessage("§aSucessfully set your money to §2" + amount);
+                            setMoney(commandPlayer.getUniqueId().toString(), commandPlayer.getName(), amount, false);
+                            commandSender.sendMessage("§aSucessfully set your money to §2" + amount);
                         } else {
-                            addMoney(executor.getUniqueId().toString(), executor.getName(), amount, false);
-                            executor.sendMessage("§aSucessfully added §2" + amount + "§a to your account");
-                            displayMoney(executor);
+                            addMoney(commandPlayer.getUniqueId().toString(), commandPlayer.getName(), amount, false);
+                            commandPlayer.sendMessage("§aSucessfully added §2" + amount + "§a to your account");
+                            displayMoney(commandPlayer);
                         }
                     } else if (args.length == 3 || args.length == 4) {
                         String playerName = args[1];
@@ -82,27 +91,26 @@ public class MoneyCommand implements CommandExecutor {
                         } else {
                             uuid = stuff.getPlayerUUID(playerName);
                             if (uuid.equals("")) {
-                                executor.sendMessage(stuff.getPlayerNotKnownSyntax(playerName));
-                                return false;
+                                commandSender.sendMessage(stuff.getPlayerNotKnownSyntax(playerName));
+                                return true;
                             }
                         }
                         int amount;
                         try {
                             amount = Integer.parseInt(args[2]);
                         } catch (NumberFormatException e) {
-                            sendCommandSyntax(executor, index);
-                            e.printStackTrace();
-                            return false;
+                            sendCommandSyntax(commandSender, index);
+                            return true;
                         }
                         if (moneyCommand.equals("set")) {
                             if (amount < 0) {
-                                executor.sendMessage("§cYou can't set a negative amount!");
-                                return false;
+                                commandSender.sendMessage("§cYou can't set a negative amount!");
+                                return true;
                             }
                         } else {
                             if (manager.getMoney(uuid) + amount < 0) {
-                                executor.sendMessage("§cYou can't give this player bills!");
-                                return false;
+                                commandSender.sendMessage("§cYou can't give this player bills!");
+                                return true;
                             }
                         }
                         boolean notification = true;
@@ -111,22 +119,27 @@ public class MoneyCommand implements CommandExecutor {
                         }
                         if (moneyCommand.equals("set")) {
                             setMoney(uuid, playerName, amount, notification);
-                            executor.sendMessage("§aSucessfully set money of §3" + playerName + "§a to §2" + amount);
+                            commandSender.sendMessage("§aSucessfully set money of §3" + playerName + "§a to §2" + amount);
                         } else {
                             addMoney(uuid, playerName, amount, notification);
-                            executor.sendMessage("§aSucessfully added §2" + amount + "§a to §3" + playerName);
+                            commandSender.sendMessage("§aSucessfully added §2" + amount + "§a to §3" + playerName);
                         }
                     } else {
-                        sendCommandSyntax(executor, index);
+                        sendCommandSyntax(commandSender, index);
                     }
                 } else {
-                    executor.sendMessage(stuff.getOPRequiredSyntax());
+                    commandSender.sendMessage(stuff.getOPRequiredSyntax());
                 }
 
                 break;
             case "pay":
+                if (consoleSender) {
+                    commandSender.sendMessage(stuff.getConsoleNotAllowedSyntax());
+                    return true;
+                }
                 index = 2;
                 if (args.length == 3) {
+                    Player commandPlayer = (Player)commandSender;
                     String recieverName = args[1];
                     Player reciever = Bukkit.getPlayer(recieverName);
                     String uuid;
@@ -135,25 +148,24 @@ public class MoneyCommand implements CommandExecutor {
                     } else {
                         uuid = stuff.getPlayerUUID(recieverName);
                         if (uuid.equals("")) {
-                            executor.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
-                            return false;
+                            commandPlayer.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
+                            return true;
                         }
                     }
                     int amount;
                     try {
                         amount = Integer.parseInt(args[2]);
                     } catch (NumberFormatException e) {
-                        sendCommandSyntax(executor, index);
-                        e.printStackTrace();
-                        return false;
+                        sendCommandSyntax(commandPlayer, index);
+                        return true;
                     }
-                    if (manager.getMoney(executor.getUniqueId().toString()) - amount < 0) {
-                        executor.sendMessage("§cYou don't have enough money!");
-                        return false;
+                    if (manager.getMoney(commandPlayer.getUniqueId().toString()) - amount < 0) {
+                        commandSender.sendMessage("§cYou don't have enough money!");
+                        return true;
                     }
-                    payMoney(executor.getUniqueId().toString(), executor.getName(), uuid, recieverName, amount);
+                    payMoney(commandPlayer.getUniqueId().toString(), commandPlayer.getName(), uuid, recieverName, amount);
                 } else if (args.length == 4) {
-                    if (executor.isOp()) {
+                    if (commandSender.isOp()) {
                         String senderName = args[1];
                         Player sender = Bukkit.getPlayer(senderName);
                         String senderUUID;
@@ -165,8 +177,8 @@ public class MoneyCommand implements CommandExecutor {
                         } else {
                             senderUUID = stuff.getPlayerUUID(senderName);
                             if (senderUUID.equals("")) {
-                                executor.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
-                                return false;
+                                commandSender.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
+                                return true;
                             }
                         }
                         if (stuff.playerIsOnline(reciever)) {
@@ -174,37 +186,37 @@ public class MoneyCommand implements CommandExecutor {
                         } else {
                             recieverUUID = stuff.getPlayerUUID(recieverName);
                             if (recieverUUID.equals("")) {
-                                executor.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
-                                return false;
+                                commandSender.sendMessage(stuff.getPlayerNotKnownSyntax(recieverName));
+                                return true;
                             }
                         }
                         int amount;
                         try {
                             amount = Integer.parseInt(args[3]);
                         } catch (NumberFormatException e) {
-                            sendCommandSyntax(executor, index);
-                            e.printStackTrace();
-                            return false;
+                            sendCommandSyntax(commandSender, index);
+                            
+                            return true;
                         }
                         if (manager.getMoney(senderUUID) - amount < 0) {
-                            executor.sendMessage(getPlayerNotEnoughMoneySyntax(senderName));
-                            return false;
+                            commandSender.sendMessage(getPlayerNotEnoughMoneySyntax(senderName));
+                            return true;
                         }
                         payMoney(senderUUID, senderName, recieverUUID, recieverName, amount);
-                        executor.sendMessage("§aSucessfully forced §3" + senderName + "§a to pay §2" + amount + "§a to §3" + recieverName);
+                        commandSender.sendMessage("§aSucessfully forced §3" + senderName + "§a to pay §2" + amount + "§a to §3" + recieverName);
                     } else {
-                        executor.sendMessage(stuff.getOPRequiredSyntax());
+                        commandSender.sendMessage(stuff.getOPRequiredSyntax());
                     }
                 } else {
-                    sendCommandSyntax(executor, index);
+                    sendCommandSyntax(commandSender, index);
                 }
                 break;
             default:
-                sendCommandSyntax(executor, 3);
+                sendCommandSyntax(commandSender, 3);
                 break;
         }
 
-        return false;
+        return true;
     }
 
     private void displayMoney(Player player) {
@@ -254,7 +266,7 @@ public class MoneyCommand implements CommandExecutor {
 
 
 
-    private void sendCommandSyntax(Player player, int index) {
+    private void sendCommandSyntax(CommandSender player, int index) {
 
         String[] usages = {
                 "([Player])",
